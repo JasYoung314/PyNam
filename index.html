@@ -52,6 +52,74 @@
 					</p>
 				</section>
 
+				<section>
+                    <h2>Advice for foreigners on how Britons walk</h2>
+					<blockquote cite="http://www.bbc.co.uk/news/magazine-28352045">
+						&ldquo;The British have little sense of pavement etiquette, preferring a slalom approach to pedestrian progress. When two strangers approach each other, it often results in the performance of a little gavotte as they double-guess in which direction the other will turn.&rdquo;
+					</blockquote>
+				</section>
+
+				<section>
+                    <h2>Advice for foreigners on how Britons walk</h2>
+					<blockquote cite="http://www.bbc.co.uk/news/magazine-28352045">
+						&ldquo;Telling people how to walk is simply not British.&rdquo;
+					</blockquote>
+					<blockquote cite="http://www.bbc.co.uk/news/magazine-28352045">
+						&ldquo;But on the street? No, we don’t walk on the left or the right. We are British and wander where we will..&rdquo;
+					</blockquote>
+				</section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+import random  # Pseudo random number generation
+# Simulate two people walking towards each other 10 times
+K = 10
+player_1 = [random.choice('LR') for k in range(K)]
+player_2 = [random.choice('LR') for k in range(K)]
+					</code></pre>
+
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+# Count the number of impacts
+impacts = sum([player_1[k] == player_2[k] for k in range(K)])
+					</code></pre>
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+# Let us make this repeatable
+def walk(K):
+    """
+    Simulate people walking along the pavement K times
+    """
+    player_1 = [random.choice('LR') for k in range(K)]
+    player_2 = [random.choice('LR') for k in range(K)]
+    impacts = sum([player_1[k] == player_2[k] for k in range(K)])
+    return impacts
+					</code></pre>
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+from bashplotlib.histogram import plot_hist
+plot_hist([walk(500) for k in range(1000)], height=20,
+                        showSummary=True)
+					</code></pre>
+                </section>
+
+
+				<section>
+					<h2>Python Code</h2>
+					<pre><code data-trim contenteditable>
+def count_scores(strat_1, strat_2):
+    """
+    Returns the scores of pairs of strategies
+    """
+    return 2
+					</code></pre>
+				</section>
 
 				<section>
 					<h2>pretty code</h2>
