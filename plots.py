@@ -13,6 +13,7 @@ def walk(number_of_walks):
     impacts = sum([player_1[k] == player_2[k] for
                                        k in range(number_of_walks)])
     return impacts
+
 fig = plt.figure()
 plt.hist([walk(500) for k in range(1000)])
 plt.xlabel('Number of impacts')
