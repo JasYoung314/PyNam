@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -28,6 +28,12 @@
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
 		</script>
+
+
+		<!-- mpld3 plots js -->
+        <script type="text/javascript" src="js/d3.js"></script>
+        <script type="text/javascript" src="js/mpld3.js"></script>
+
 
         <!-- Favicon -->
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -50,6 +56,9 @@
 					<p>
                     <small><a href='https://twitter.com/drvinceknight'>@drvinceknight</a></small>
 					</p>
+					<p>
+                    <small><a href='http://vincent-knight.com/'>vincent-knight.com</a></small>
+					</p>
 				</section>
 
 				<section>
@@ -67,6 +76,10 @@
 					<blockquote cite="http://www.bbc.co.uk/news/magazine-28352045">
 						&ldquo;But on the street? No, we don’t walk on the left or the right. We are British and wander where we will..&rdquo;
 					</blockquote>
+				</section>
+
+                <section>
+                <img src='./assets/img/walking_game.svg'>
 				</section>
 
                 <section>
@@ -90,71 +103,93 @@ impacts = sum([player_1[k] == player_2[k] for k in range(K)])
                 <section>
 					<pre><code data-trim contenteditable>
 # Let us make this repeatable
-def walk(K):
+def walk(number_of_walks):
     """
     Simulate people walking along the pavement K times
     """
-    player_1 = [random.choice('LR') for k in range(K)]
-    player_2 = [random.choice('LR') for k in range(K)]
-    impacts = sum([player_1[k] == player_2[k] for k in range(K)])
+    player_1 = [random.choice('LR') for k in range(number_of_walks)]
+    player_2 = [random.choice('LR') for k in range(number_of_walks)]
+    impacts = sum([player_1[k] == player_2[k] for
+                                       k in range(number_of_walks)])
     return impacts
 					</code></pre>
                 </section>
 
                 <section>
+                <h2> (Plotting in Python) </h2>
+                    <ul>
+                        <li>Standard: matplotlib - <a href='http://matplotlib.org/'>matplotlib.org/</a></li>
+                        <li>Get plots in html/js: mpld3 - <a href='http://mpld3.github.io/'>mpld3.github.io/</a></li>
+                        <li>Like a boss: bashplotlib (not as pretty but cool) - <a href='https://github.com/glamp/bashplotlib'>github.com/glamp/bashplotlib</a></li>
+                    </ul>
+                </section>
+
+                <section>
 					<pre><code data-trim contenteditable>
-from bashplotlib.histogram import plot_hist
-plot_hist([walk(500) for k in range(1000)], height=20,
-                        showSummary=True)
+# Let us plot a large number of these interactions
+from bashplotlib.histogram import plot_hist  # cli plots
+plot_hist([walk(500) for k in range(1000)],
+                        height=20,  # Set the height
+                        colour='red',  # Set the colour
+                        bincount=20,  # Number of bins
+                        showSummary=True)  # Show a summary
+					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='random_choice.html' width=660 height=510 align="middle"></iframe>
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+# Let us make this repeatable
+def run_experiment(number_of_walks=500, trials=1000):
+    return plot_hist([walk(number_of_walks) for k in range(trials)],
+                            height=20,  # Set the height
+                            colour='red',  # Set the colour
+                            bincount=20,  # Number of bins
+                            showSummary=True)  # Show a summary of everything
 					</code></pre>
                 </section>
 
 
-				<section>
-					<h2>Python Code</h2>
+                <section>
 					<pre><code data-trim contenteditable>
-def count_scores(strat_1, strat_2):
+# What if everyone walks on the left?
+def walk(number_of_walks):
     """
-    Returns the scores of pairs of strategies
+    Simulate people walking along the pavement K times
     """
-    return 2
-					</code></pre>
-				</section>
+    player_1 = [random.choice('L') for k in range(number_of_walks)]
+    player_2 = [random.choice('L') for k in range(number_of_walks)]
+    impacts = sum([player_1[k] == player_2[k] for
+                                       k in range(number_of_walks)])
+    return impacts
 
-				<section>
-					<h2>pretty code</h2>
+run_experiment()
+					</code></pre>
+                </section>
+
+
+                <section>
 					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3dtransforms ) {
+# What if people mix and match?
+strategy_1 = (20,80)  # Walk on the Left 20 out of 100 times
+strategy_2 = (50,50)  # Walk on the left 50 out of 100 times
 
-    var nodes = document.queryselectorall( selector );
+def walk(number_of_walks=500, strategy_1=(1,1), strategy_2=(1,1)):
+    """
+    Simulate people walking along the pavement K times
+    """
+    player_1 = [random.choice('L' * strategy_1[0] + 'R' * strategy_1[1]) for k in range(number_of_walks)]
+    player_2 = [random.choice('L' * strategy_2[0] + 'R' * strategy_2[1]) for k in range(number_of_walks)]
+    impacts = sum([player_1[k] == player_2[k] for
+                                       k in range(number_of_walks)])
+    return impacts
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.classname ) {
-        node.classname += ' roll';
-      }
-    }
-  }
-}
+run_experiment(500, strategy_1, strategy_2)
 					</code></pre>
-					<p>code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
-
-
-				<section>
-					<h2>clever quotes</h2>
-					<p>
-						these guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/our-favorite-technology-quotations">
-						&ldquo;the nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/our-favorite-technology-quotations">
-						&ldquo;for years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of shakespeare. the internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
-				</section>
-
+                </section>
 
 			</div>
 
