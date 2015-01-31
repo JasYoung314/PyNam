@@ -55,9 +55,7 @@
 					<h3>Some Game Theory with Python</h3>
 					<p>
                     <small><a href='https://twitter.com/drvinceknight'>@drvinceknight</a></small>
-					</p>
-					<p>
-                    <small><a href='http://vincent-knight.com/'>vincent-knight.com</a></small>
+                    <small><a href='http://vincent-knight.com/'>www.vincent-knight.com</a></small>
 					</p>
 				</section>
 
@@ -85,10 +83,11 @@
                 <section>
 					<pre><code data-trim contenteditable>
 import random  # Pseudo random number generation
+
 # Simulate two people walking towards each other 10 times
-K = 10
-player_1 = [random.choice('LR') for k in range(K)]
-player_2 = [random.choice('LR') for k in range(K)]
+number_of_walks = 10
+player_1 = [random.choice('LR') for k in range(number_of_walks)]
+player_2 = [random.choice('LR') for k in range(number_of_walks)]
 					</code></pre>
 
                 </section>
@@ -96,20 +95,23 @@ player_2 = [random.choice('LR') for k in range(K)]
                 <section>
 					<pre><code data-trim contenteditable>
 # Count the number of impacts
-impacts = sum([player_1[k] == player_2[k] for k in range(K)])
+
+impacts = sum([player_1[k] != player_2[k]
+                                   for k in range(number_of_walks)])
 					</code></pre>
                 </section>
 
                 <section>
 					<pre><code data-trim contenteditable>
 # Let us make this repeatable
+
 def walk(number_of_walks):
     """
-    Simulate people walking along the pavement K times
+    Simulate people walking along the pavement
     """
     player_1 = [random.choice('LR') for k in range(number_of_walks)]
     player_2 = [random.choice('LR') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] == player_2[k] for
+    impacts = sum([player_1[k] != player_2[k] for
                                        k in range(number_of_walks)])
     return impacts
 					</code></pre>
@@ -127,6 +129,7 @@ def walk(number_of_walks):
                 <section>
 					<pre><code data-trim contenteditable>
 # Let us plot a large number of these interactions
+
 from bashplotlib.histogram import plot_hist  # cli plots
 plot_hist([walk(500) for k in range(1000)],
                         height=20,  # Set the height
@@ -143,12 +146,15 @@ plot_hist([walk(500) for k in range(1000)],
                 <section>
 					<pre><code data-trim contenteditable>
 # Let us make this repeatable
-def run_experiment(number_of_walks=500, trials=1000):
-    return plot_hist([walk(number_of_walks) for k in range(trials)],
-                            height=20,  # Set the height
-                            colour='red',  # Set the colour
-                            bincount=20,  # Number of bins
-                            showSummary=True)  # Show a summary of everything
+
+def plot_experiment(data):
+    return plot_hist(data,
+                     height=20,  # Set the height
+                     colour='red',  # Set the colour
+                     bincount=20,  # Number of bins
+                     showSummary=True)  # Show a summary
+
+plot_experiment([walk(500) for k in range(1000)])
 					</code></pre>
                 </section>
 
@@ -156,39 +162,72 @@ def run_experiment(number_of_walks=500, trials=1000):
                 <section>
 					<pre><code data-trim contenteditable>
 # What if everyone walks on the left?
+
 def walk(number_of_walks):
     """
-    Simulate people walking along the pavement K times
+    Simulate people walking along the pavement
     """
     player_1 = [random.choice('L') for k in range(number_of_walks)]
     player_2 = [random.choice('L') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] == player_2[k] for
+    impacts = sum([player_1[k] != player_2[k] for
                                        k in range(number_of_walks)])
     return impacts
 
-run_experiment()
+plot_experiment([walk(500) for k in range(1000)])
 					</code></pre>
                 </section>
 
+                <section>
+                    <iframe src='all_left.html' width=660 height=510 align="middle"></iframe>
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+# What if 1 person walks on the left and the other on the right?
+
+def walk(number_of_walks):
+    """
+    Simulate people walking along the pavement
+    """
+    player_1 = [random.choice('L') for k in range(number_of_walks)]
+    player_2 = [random.choice('R') for k in range(number_of_walks)]
+    impacts = sum([player_1[k] != player_2[k] for
+                                       k in range(number_of_walks)])
+    return impacts
+
+plot_experiment([walk(500) for k in range(1000)])
+					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='left_right.html' width=660 height=510 align="middle"></iframe>
+                </section>
 
                 <section>
 					<pre><code data-trim contenteditable>
 # What if people mix and match?
-strategy_1 = (20,80)  # Walk on the Left 20 out of 100 times
-strategy_2 = (50,50)  # Walk on the left 50 out of 100 times
+
+strategy_1 = (20, 80)  # Walk on the left 20 out of 100 times
+strategy_2 = (90, 10)  # Walk on the left 90 out of 100 times
 
 def walk(number_of_walks=500, strategy_1=(1,1), strategy_2=(1,1)):
     """
-    Simulate people walking along the pavement K times
+    Simulate people walking along the pavement
     """
-    player_1 = [random.choice('L' * strategy_1[0] + 'R' * strategy_1[1]) for k in range(number_of_walks)]
-    player_2 = [random.choice('L' * strategy_2[0] + 'R' * strategy_2[1]) for k in range(number_of_walks)]
-    impacts = sum([player_1[k] == player_2[k] for
+    player_1 = [random.choice('L' * strategy_1[0] + 'R' * strategy_1[1])
+                                      for k in range(number_of_walks)]
+    player_2 = [random.choice('L' * strategy_2[0] + 'R' * strategy_2[1])
+                                      for k in range(number_of_walks)]
+    impacts = sum([player_1[k] != player_2[k] for
                                        k in range(number_of_walks)])
     return impacts
 
-run_experiment(500, strategy_1, strategy_2)
+plot_experiment([walk(500, strategy_1, strategy_2) for k in range(1000)])
 					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='mixed.html' width=660 height=510 align="middle"></iframe>
                 </section>
 
 			</div>
