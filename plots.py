@@ -10,15 +10,15 @@ def walk(number_of_walks):
     """
     Simulate people walking along the pavement K times
     """
-    player_1 = [random.choice('LR') for k in range(number_of_walks)]
-    player_2 = [random.choice('LR') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
+    reds = [random.choice('LR') for k in range(number_of_walks)]
+    blues = [random.choice('LR') for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for
                                        k in range(number_of_walks)])
-    return impacts
+    return bumps
 
 fig = plt.figure()
 plt.hist([walk(500) for k in range(1000)], bins=20)
-plt.xlabel('Number of impacts')
+plt.xlabel('Number of bumps')
 plt.ylabel('Frequency')
 plt.title('Simulating 2000 people walking towards each other 500 times randomly')
 plt.xlim(0,500)
@@ -30,15 +30,15 @@ def walk(number_of_walks):
     """
     Simulate people walking along the pavement K times
     """
-    player_1 = [random.choice('L') for k in range(number_of_walks)]
-    player_2 = [random.choice('L') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
+    reds = [random.choice('L') for k in range(number_of_walks)]
+    blues = [random.choice('L') for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for
                                        k in range(number_of_walks)])
-    return impacts
+    return bumps
 
 fig = plt.figure()
 plt.hist([walk(500) for k in range(1000)], bins=1)
-plt.xlabel('Number of impacts')
+plt.xlabel('Number of bumps')
 plt.ylabel('Frequency')
 plt.title('Simulating 2000 people walking towards each other 500 times but all agreeing on a side')
 plt.xlim(-5,500)
@@ -50,41 +50,142 @@ def walk(number_of_walks):
     """
     Simulate people walking along the pavement K times
     """
-    player_1 = [random.choice('L') for k in range(number_of_walks)]
-    player_2 = [random.choice('R') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
+    reds = [random.choice('L') for k in range(number_of_walks)]
+    blues = [random.choice('R') for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for
                                        k in range(number_of_walks)])
-    return impacts
+    return bumps
 
 fig = plt.figure()
 plt.hist([walk(500) for k in range(1000)], bins=1)
-plt.xlabel('Number of impacts')
+plt.xlabel('Number of bumps')
 plt.ylabel('Frequency')
 plt.title('Simulating 2000 people walking towards each other 500 times but all walking on the same side')
 plt.xlim(0,505)
 mpld3.save_html(fig,"left_right.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
 
-# Script for 'left_right.html'
+# Script for 'mixed.html'
 # What if everyone walks on opposite sides
-strategy_1 = (20,80)  # Walk on the Left 20 out of 100 times
-strategy_2 = (90,10)  # Walk on the left 50 out of 100 times
+red_strategy = (20,80)  # Walk on the Left 20 out of 100 times
+blue_strategy = (90,10)  # Walk on the left 50 out of 100 times
 
-def walk(number_of_walks=500, strategy_1=(1,1), strategy_2=(1,1)):
+def walk(number_of_walks=500, red_strategy=(1,1), blue_strategy=(1,1)):
     """
     Simulate people walking along the pavement K times
     """
-    player_1 = [random.choice('L' * strategy_1[0] + 'R' * strategy_1[1])
+    reds = [random.choice('L' * red_strategy[0] + 'R' * red_strategy[1])
                                              for k in range(number_of_walks)]
-    player_2 = [random.choice('L' * strategy_2[0] + 'R' * strategy_2[1])
+    blues = [random.choice('L' * blue_strategy[0] + 'R' * blue_strategy[1])
                                              for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
+    bumps = sum([reds[k] != blues[k] for
                                        k in range(number_of_walks)])
-    return impacts
+    return bumps
 
 fig = plt.figure()
-plt.hist([walk(500, strategy_1, strategy_2) for k in range(1000)], bins=20)
-plt.xlabel('Number of impacts')
+plt.hist([walk(500, red_strategy, blue_strategy) for k in range(1000)], bins=20)
+plt.xlabel('Number of bumps')
 plt.ylabel('Frequency')
 plt.title('Simulating 2000 people walking towards each other 500 times but mixing things up')
 plt.xlim(0,505)
 mpld3.save_html(fig,"mixed.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
+
+# Script for 'effect_against_left.html'
+# What if everyone walks on opposite sides
+
+def walk(number_of_walks=500, red_strategy=(1,1), blue_strategy=(1,1)):
+    """
+    Simulate people walking along the pavement K times
+    """
+    reds = [random.choice('L' * red_strategy[0] + 'R' * red_strategy[1])
+                                             for k in range(number_of_walks)]
+    blues = [random.choice('L' * blue_strategy[0] + 'R' * blue_strategy[1])
+                                             for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for
+                                       k in range(number_of_walks)])
+    return bumps
+
+fig = plt.figure()
+plt.scatter(range(100), [walk(10000, (1,0), (x, 100-x)) for x in range(100)])
+plt.xlabel('x')
+plt.ylabel('Frequency')
+plt.title('The effect of x (proportion of time walking left) against people walking left')
+plt.xlim(0,100)
+plt.ylim(0,10000)
+mpld3.save_html(fig,"effect_against_left.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
+
+# Script for 'effect_against_half_and_half.html'
+
+def walk(number_of_walks=500, red_strategy=(1,1), blue_strategy=(1,1)):
+    """
+    Simulate people walking along the pavement K times
+    """
+    reds = [random.choice('L' * red_strategy[0] + 'R' * red_strategy[1])
+                                             for k in range(number_of_walks)]
+    blues = [random.choice('L' * blue_strategy[0] + 'R' * blue_strategy[1])
+                                             for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for
+                                       k in range(number_of_walks)])
+    return bumps
+
+fig = plt.figure()
+plt.scatter(range(100), [walk(10000, (1,1), (x, 100-x)) for x in range(100)])
+plt.xlabel('x')
+plt.ylabel('Frequency')
+plt.title('The effect of x (proportion of time walking left) against people walking randomly')
+plt.xlim(0,100)
+plt.ylim(0,10000)
+mpld3.save_html(fig,"effect_against_half_and_half.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
+
+# Script for 'evolutionary dynamics'
+
+# Evolutionary dynamics with both starting on the left
+size_of_population = 100
+number_of_rounds = 500
+mutation_factor = .05
+reds = ['L' for k in range(size_of_population)]
+blues = ['L' for k in range(size_of_population)]
+red_data = [sum([k == 'L' for k in reds])]
+blue_data = [sum([k == 'L' for k in reds])]
+for rnd in range(number_of_rounds):
+    for indx, pair in enumerate(zip(reds, blues)):
+        if pair[0] != pair[1]:
+            if random.random() < mutation_factor:
+                reds[indx], blues[indx] =  blues[indx], reds[indx]
+    red_data.append(sum([k == 'L' for k in reds]))
+    blue_data.append(sum([k == 'L' for k in blues]))
+
+fig = plt.figure()
+plt.scatter(range(len(red_data)), red_data, color='red', marker='>')
+plt.scatter(range(len(blue_data)), blue_data, color='blue', marker='<')
+plt.xlabel('round')
+plt.ylabel('Number of the left')
+plt.title('Start with same convention')
+plt.ylim(0,101)
+plt.xlim(0, number_of_rounds)
+mpld3.save_html(fig,"evolutionary_dynamics_both_L.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
+
+# Evolutionary dynamics with both starting on a given side
+size_of_population = 100
+number_of_rounds = 500
+mutation_factor = .05
+reds = ['L' for k in range(size_of_population)]
+blues = ['R' for k in range(size_of_population)]
+red_data = [sum([k == 'L' for k in reds])]
+blue_data = [sum([k == 'L' for k in reds])]
+for rnd in range(number_of_rounds):
+    for indx, pair in enumerate(zip(reds, blues)):
+        if pair[0] != pair[1]:
+            if random.random() < mutation_factor:
+                reds[indx], blues[indx] =  blues[indx], reds[indx]
+    red_data.append(sum([k == 'L' for k in reds]))
+    blue_data.append(sum([k == 'L' for k in blues]))
+
+fig = plt.figure()
+plt.scatter(range(len(red_data)), red_data, color='red', marker='>')
+plt.scatter(range(len(blue_data)), blue_data, color='blue', marker='<')
+plt.xlabel('round')
+plt.ylabel('Number of the left')
+plt.title('Start with different conventions')
+plt.ylim(0,101)
+plt.xlim(0, number_of_rounds)
+mpld3.save_html(fig,"evolutionary_dynamics_L_and_R.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')

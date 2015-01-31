@@ -54,7 +54,7 @@
 					<h1>Walking on pavements</h1>
 					<h3>Some Game Theory with Python</h3>
 					<p>
-                    <small><a href='https://twitter.com/drvinceknight'>@drvinceknight</a></small>
+                    <small><a href='https://twitter.com/drvinceknight'>@drvinceknight</a></small><br>
                     <small><a href='http://vincent-knight.com/'>www.vincent-knight.com</a></small>
 					</p>
 				</section>
@@ -86,18 +86,17 @@ import random  # Pseudo random number generation
 
 # Simulate two people walking towards each other 10 times
 number_of_walks = 10
-player_1 = [random.choice('LR') for k in range(number_of_walks)]
-player_2 = [random.choice('LR') for k in range(number_of_walks)]
+reds = [random.choice('LR') for k in range(number_of_walks)]
+blues = [random.choice('LR') for k in range(number_of_walks)]
 					</code></pre>
 
                 </section>
 
                 <section>
 					<pre><code data-trim contenteditable>
-# Count the number of impacts
+# Count the number of bumps
 
-impacts = sum([player_1[k] != player_2[k]
-                                   for k in range(number_of_walks)])
+bumps = sum([reds[k] != blues[k] for k in range(number_of_walks)])
 					</code></pre>
                 </section>
 
@@ -109,11 +108,10 @@ def walk(number_of_walks):
     """
     Simulate people walking along the pavement
     """
-    player_1 = [random.choice('LR') for k in range(number_of_walks)]
-    player_2 = [random.choice('LR') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
-                                       k in range(number_of_walks)])
-    return impacts
+    reds = [random.choice('LR') for k in range(number_of_walks)]
+    blues = [random.choice('LR') for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for k in range(number_of_walks)])
+    return bumps
 					</code></pre>
                 </section>
 
@@ -140,7 +138,7 @@ plot_hist([walk(500) for k in range(1000)],
                 </section>
 
                 <section>
-                    <iframe src='random_choice.html' width=660 height=510 align="middle"></iframe>
+                    <iframe src='random_choice.html' width=710 height=505 align="middle"></iframe>
                 </section>
 
                 <section>
@@ -167,18 +165,17 @@ def walk(number_of_walks):
     """
     Simulate people walking along the pavement
     """
-    player_1 = [random.choice('L') for k in range(number_of_walks)]
-    player_2 = [random.choice('L') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
-                                       k in range(number_of_walks)])
-    return impacts
+    reds = [random.choice('L') for k in range(number_of_walks)]
+    blues = [random.choice('L') for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for k in range(number_of_walks)])
+    return bumps
 
 plot_experiment([walk(500) for k in range(1000)])
 					</code></pre>
                 </section>
 
                 <section>
-                    <iframe src='all_left.html' width=660 height=510 align="middle"></iframe>
+                    <iframe src='all_left.html' width=710 height=505  align="middle"></iframe>
                 </section>
 
                 <section>
@@ -189,41 +186,43 @@ def walk(number_of_walks):
     """
     Simulate people walking along the pavement
     """
-    player_1 = [random.choice('L') for k in range(number_of_walks)]
-    player_2 = [random.choice('R') for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
-                                       k in range(number_of_walks)])
-    return impacts
+    reds = [random.choice('L') for k in range(number_of_walks)]
+    blues = [random.choice('R') for k in range(number_of_walks)]
+    bumps = sum([reds[k] != blues[k] for k in range(number_of_walks)])
+    return bumps
 
 plot_experiment([walk(500) for k in range(1000)])
 					</code></pre>
                 </section>
 
                 <section>
-                    <iframe src='left_right.html' width=660 height=510 align="middle"></iframe>
+                    <iframe src='left_right.html' width=710 height=505 align="middle"></iframe>
                 </section>
 
                 <section>
 					<pre><code data-trim contenteditable>
 # What if people mix and match?
 
-strategy_1 = (20, 80)  # Walk on the left 20 out of 100 times
-strategy_2 = (90, 10)  # Walk on the left 90 out of 100 times
+red_strategy = (20, 80)  # Walk on the left 20 out of 100 times
+blue_strategy = (90, 10)  # Walk on the left 90 out of 100 times
 
-def walk(number_of_walks=500, strategy_1=(1,1), strategy_2=(1,1)):
+def walk(number_of_walks=500, red_strategy=(1,1), blue_strategy=(1,1)):
     """
     Simulate people walking along the pavement
     """
-    player_1 = [random.choice('L' * strategy_1[0] + 'R' * strategy_1[1])
+    reds = [random.choice('L' * red_strategy[0] + 'R' * red_strategy[1])
                                       for k in range(number_of_walks)]
-    player_2 = [random.choice('L' * strategy_2[0] + 'R' * strategy_2[1])
+    blues = [random.choice('L' * blue_strategy[0] + 'R' * blue_strategy[1])
                                       for k in range(number_of_walks)]
-    impacts = sum([player_1[k] != player_2[k] for
-                                       k in range(number_of_walks)])
-    return impacts
+    bumps = sum([reds[k] != blues[k] for k in range(number_of_walks)])
+    return bumps
 
-plot_experiment([walk(500, strategy_1, strategy_2) for k in range(1000)])
+plot_experiment([walk(500, red_strategy, blue_strategy) for k in range(1000)])
 					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='mixed.html' width=710 height=505 align="middle"></iframe>
                 </section>
 
                 <section>
@@ -236,7 +235,65 @@ plot_scatter([walk(500, (1,0), (x, 100-x)) for x in range(100)])
                 </section>
 
                 <section>
-                    <iframe src='mixed.html' width=660 height=510 align="middle"></iframe>
+                    <iframe src='effect_against_left.html' width=660 height=502 align="middle"></iframe>
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+# What is effect of mix and matching?
+from bashplotlib.scatterplot import plot_scatter  # scatter plots
+
+plot_scatter([walk(500, (.5,.5), (x, 100-x)) for x in range(100)])
+					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='effect_against_half_and_half.html' width=660 height=502 align="middle"></iframe>
+                </section>
+
+                <section>
+					<pre><code data-trim contenteditable>
+# Evolutionary dynamics
+size_of_population = 100  # Number of people
+number_of_rounds = 500  # How many rounds
+mutation_factor = .05  # Chance of mind change
+
+reds = ['L' for k in range(size_of_population)]
+blues = ['L' for k in range(size_of_population)]
+red_data = [sum([k == 'L' for k in reds])]
+blue_data = [sum([k == 'L' for k in reds])]
+
+for rnd in range(number_of_rounds):  # Loop through rounds
+    for j, pair in enumerate(zip(reds, blues)):  # Loop through players
+        if pair[0] != pair[1]:  # If bump
+            if random.random() < mutation_factor:  # If mind change
+                reds[j], blues[j] =  blues[j], reds[j]
+    red_data.append(sum([k == 'L' for k in reds]))  # Data collection
+    blue_data.append(sum([k == 'L' for k in blues]))
+					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='evolutionary_dynamics_both_L.html' width=660 height=502 align="middle"></iframe>
+                </section>
+
+                <section>
+                    <iframe src='evolutionary_dynamics_L_and_R.html' width=660 height=502 align="middle"></iframe>
+                </section>
+
+                <section>
+                    <ul>
+                        <li>Simple Python (if and for loops);</li>
+                        <li>Convention or conventional chaos.</li>
+                    </ul>
+                </section>
+
+                <section>
+					<p>
+                    <a href='https://twitter.com/drvinceknight'>@drvinceknight</a><br>
+                    <a href='http://vincent-knight.com/'>www.vincent-knight.com</a><br>
+                    <a href='github.com/drvinceknight/PyNam'>github.com/drvinceknight/PyNam</a>
+					</p>
                 </section>
 
 			</div>
