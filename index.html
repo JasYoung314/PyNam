@@ -227,6 +227,15 @@ plot_experiment([walk(500, strategy_1, strategy_2) for k in range(1000)])
                 </section>
 
                 <section>
+					<pre><code data-trim contenteditable>
+# What is effect of mix and matching?
+from bashplotlib.scatterplot import plot_scatter  # scatter plots
+
+plot_scatter([walk(500, (1,0), (x, 100-x)) for x in range(100)])
+					</code></pre>
+                </section>
+
+                <section>
                     <iframe src='mixed.html' width=660 height=510 align="middle"></iframe>
                 </section>
 
