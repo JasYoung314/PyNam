@@ -33,6 +33,7 @@ body {
   background-color: #fff;
   color: #000; }
 
+
 ::-moz-selection {
   background: #FF5E99;
   color: #fff;
@@ -312,6 +313,7 @@ body {
   -webkit-transition: -webkit-transform-origin 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), -webkit-transform 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), visibility 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), opacity 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
           transition: -ms-transform-origin 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), transform 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), visibility 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), opacity 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985);
           transition: transform-origin 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), transform 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), visibility 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985), opacity 800ms cubic-bezier(0.26, 0.86, 0.44, 0.985); }
+
 
 /* Global transition speed settings */
 .reveal[data-transition-speed="fast"] .slides section {
@@ -1142,3 +1144,15 @@ body {
 
 .zoomed .reveal .roll span:after {
   visibility: hidden; }
+
+#wrap { width: 600px; height: 1200px; padding: 0; overflow: hidden; }
+#frame { width: 800px; height: 1200px; border: 1px solid black; }
+#frame {
+    zoom: 0.75;
+    -moz-transform: scale(0.75);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.75);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.75);
+    -webkit-transform-origin: 0 0;
+}
