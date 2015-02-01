@@ -158,6 +158,18 @@ class Axelrod:
             Cooperator [2888, 5797, 8724, 11618, 14461, 17400, 20327, 23212, 26103, 29003]
             Tit For Tat [2584, 5143, 7681, 10223, 12746, 15297, 17849, 20400, 22946, 25505]
             Random [3456, 6282, 9600, 12370, 15762, 19125, 22192, 24999, 28129, 30918]
+
+        Let us take a look at the min, mean and max of the results:
+            >>> for player in sorted(results.keys()):
+            ...     print player, min(results[player]), sum(results[player]) / float(10), max(results[player])
+            Grudger 2414 13278.8 24132
+            Defector 2784 15276.0 27720
+            Go By Majority 2457 13977.3 25558
+            Cooperator 2888 15953.3 29003
+            Tit For Tat 2584 14037.4 25505
+            Random 3456 17283.3 30918
+
+        We get a similar conclusion to before with Grudger, Defect and Tit for Tat doing very well: in other words we see that cooperation is rewarded.
         """
         dic = {player:[] for player in self.players}
         for repetition in range(repetitions):
@@ -522,3 +534,19 @@ i       The string method for the strategy:
             Go By Majority
         """
         return 'Go By Majority'
+
+
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt, mpld3
+    P1 = Defector()
+    P2 = Cooperator()
+    P3 = TitForTat()
+    P4 = Grudger()
+    P5 = GoByMajority()
+    P6 = Random()
+    axelrod = Axelrod(P1, P2, P3, P4, P5, P6)
+    results = axelrod.tournament(turns=1000, repetitions=50)
+
+    plt.boxplot([results[player] for player in axelrod.players])
+    plt.xticks(range(1, 7), [str(p) for p in axelrod.players], rotation=90)
+    mpld3.show()
