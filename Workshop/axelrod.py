@@ -71,60 +71,56 @@ class Axelrod:
             Cooperator 20
             Tit For Tat 20
 
-        Automatically runs all results as required for games with more players:
+        Automatically runs all results as required for games with more players, taking
+        the random player out:
 
-            >>> random.seed(1)
             >>> P1 = Defector()
             >>> P2 = Cooperator()
-            >>> P3 = Random()
-            >>> P4 = TitForTat()
-            >>> axelrod = Axelrod(P1, P2, P3, P4)
+            >>> P3 = TitForTat()
+            >>> axelrod = Axelrod(P1, P2, P3)
             >>> axelrod.round_robin(turns=200)
             >>> for player in sorted(axelrod.players, key=lambda x: x.score):
             ...     print player, player.score
-            Defector 1192
-            Random 1687
-            Tit For Tat 1784
-            Cooperator 2088
+            Defector 796
+            Tit For Tat 1201
+            Cooperator 1400
 
         We see here that Tit for Tat does very poorly (compared to the Defector)
         despite the well known results. Why is this? Let us introduce another
         'aggressive' strategy
 
-            >>> random.seed(1)
             >>> P1 = Defector()
             >>> P2 = Cooperator()
             >>> P3 = TitForTat()
-            >>> P4 = Random()
-            >>> P5 = Grudger()
+            >>> P4 = Grudger()
+            >>> axelrod = Axelrod(P1, P2, P3, P4)
+            >>> axelrod.round_robin(turns=200)
+            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
+            ...     print player, player.score
+            Defector 1592
+            Tit For Tat 1601
+            Grudger 1601
+            Cooperator 1800
+
+        We see that Tit for Tat is much closer. Let us add in another strategy.
+
+            >>> P1 = Defector()
+            >>> P2 = Cooperator()
+            >>> P3 = TitForTat()
+            >>> P4 = Grudger()
+            >>> P5 = GoByMajority()
             >>> axelrod = Axelrod(P1, P2, P3, P4, P5)
             >>> axelrod.round_robin(turns=200)
             >>> for player in sorted(axelrod.players, key=lambda x: x.score):
             ...     print player, player.score
-            Defector 1988
-            Grudger 2014
-            Tit For Tat 2184
-            Cooperator 2488
-            Random 2580
+            Tit For Tat 2001
+            Grudger 2001
+            Go By Majority 2001
+            Cooperator 2200
+            Defector 2388
 
-        We see that Tit for Tat is much closer. Let us add in another strategy.
-
-            >>> random.seed(1)
-            >>> P1 = Defector()
-            >>> P2 = Cooperator()
-            >>> P3 = TitForTat()
-            >>> P4 = Random()
-            >>> P5 = Grudger()
-            >>> P6 = GoByMajority()
-            >>> axelrod = Axelrod(P1, P2, P3, P4, P5, P6)
-            >>> axelrod.round_robin(turns=200)
-            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
-            ...     print player, player.score
-            Defector 1988
-            Grudger 2014
-            Tit For Tat 2184
-            Cooperator 2488
-            Random 2580
+        Now Tit for Tat is top of the pile and in fact the defector is at the bottom.
+        Take a look at the various strategies.
         """
         for p1, p2 in itertools.combinations(self.players, 2):
             turn = 0
