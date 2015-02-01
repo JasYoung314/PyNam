@@ -34,9 +34,11 @@ class Axelrod:
         """
         self.players = list(args)
 
-    def round_robin(self, turns=10):
+    def round_robin(self, turns=200):
         """
-        Plays a round robin where each match lasts turns
+        Plays a round robin where each match lasts turns.
+
+        Defector viciously punishes Cooperator:
 
             >>> P1 = Defector()
             >>> P2 = Cooperator()
@@ -47,31 +49,65 @@ class Axelrod:
             Defector 0
             Cooperator 50
 
+        Defector does very well against Tit for Tat:
+
+            >>> P1 = Defector()
+            >>> P2 = TitForTat()
+            >>> axelrod = Axelrod(P1, P2)
+            >>> axelrod.round_robin(turns=10)
+            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
+            ...     print player, player.score
+            Defector 36
+            Tit For Tat 41
+
+        Cooperator does very well WITH Tit for Tat:
+
+            >>> P1 = Cooperator()
+            >>> P2 = TitForTat()
+            >>> axelrod = Axelrod(P1, P2)
+            >>> axelrod.round_robin(turns=10)
+            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
+            ...     print player, player.score
+            Cooperator 20
+            Tit For Tat 20
+
         Automatically runs all results as required for games with more players:
 
             >>> random.seed(1)
             >>> P1 = Defector()
             >>> P2 = Cooperator()
             >>> P3 = Random()
-            >>> axelrod = Axelrod(P1, P2, P3)
-            >>> axelrod.round_robin(turns=10)
+            >>> P4 = TitForTat()
+            >>> axelrod = Axelrod(P1, P2, P3, P4)
+            >>> axelrod.round_robin(turns=200)
             >>> for player in sorted(axelrod.players, key=lambda x: x.score):
             ...     print player, player.score
-            Defector 16
-            Random 56
-            Cooperator 85
+            Defector 1192
+            Random 1687
+            Tit For Tat 1784
+            Cooperator 2088
 
-            >>> random.seed(110)
+        We see here that Tit for Tat does very poorly (compared to the Defector)
+        despite the well known results. Why is this? Let us introduce another
+        'aggressive' strategy
+
+            >>> random.seed(1)
             >>> P1 = Defector()
             >>> P2 = Cooperator()
-            >>> P3 = Random()
-            >>> axelrod = Axelrod(P1, P2, P3)
-            >>> axelrod.round_robin(turns=10)
+            >>> P3 = TitForTat()
+            >>> P4 = Random()
+            >>> P5 = Grudger()
+            >>> axelrod = Axelrod(P1, P2, P3, P4, P5)
+            >>> axelrod.round_robin(turns=200)
             >>> for player in sorted(axelrod.players, key=lambda x: x.score):
             ...     print player, player.score
-            Defector 12
-            Random 55
-            Cooperator 88
+            Defector 1988
+            Grudger 2014
+            Tit For Tat 2184
+            Cooperator 2488
+            Random 2580
+
+        We see that the Tit for Tat strategy is now much closer to the defector strategy.
         """
         for p1, p2 in itertools.combinations(self.players, 2):
             turn = 0
@@ -223,7 +259,7 @@ class Cooperator(Player):
         This is not affect by the history of either player:
 
             >>> P1.history = ['C', 'D', 'C']
-            >>> P2  = ['C', 'C', 'D']
+            >>> P2.history  = ['C', 'C', 'D']
             >>> P1.strategy(P2)
             'C'
         >>>
@@ -258,7 +294,7 @@ class Random(Player):
 
             >>> random.seed(1)
             >>> P1.history = ['C', 'D', 'C']
-            >>> P2  = ['C', 'C', 'D']
+            >>> P2.history = ['C', 'C', 'D']
             >>> P1.strategy(P2)
             'C'
 
@@ -284,3 +320,136 @@ i       The string method for the strategy:
             Cooperator
         """
         return 'Random'
+
+class TitForTat(Player):
+    """
+    A player starts by cooperating and then mimics previous move by opponent.
+    """
+    def strategy(self, opponent):
+        """
+        Begins by playing 'C':
+
+            >>> random.seed(1)
+            >>> P1 = TitForTat()
+            >>> P2 = Player()
+            >>> P1.strategy(P2)
+            'C'
+
+        This is affected by the history of the opponent:
+
+            >>> P1.history = ['C', 'D', 'C']
+            >>> P2.history = ['C', 'C', 'D']
+            >>> P1.strategy(P2)
+            'D'
+
+            >>> P1.history.append('D')
+            >>> P2.history.append('C')
+            >>> P1.strategy(P2)
+            'C'
+        >>>
+        """
+        try:
+            return opponent.history[-1]
+        except IndexError:
+            return 'C'
+
+    def __repr__(self):
+        """
+i       The string method for the strategy:
+
+            >>> P1 = Cooperator()
+            >>> print P1
+            Cooperator
+        """
+        return 'Tit For Tat'
+
+class Grudger(Player):
+    """
+    A player starts by cooperating however will defect if at any point the opponent has defected
+    """
+    def strategy(self, opponent):
+        """
+        Begins by playing 'C':
+
+            >>> P1 = Grudger()
+            >>> P2 = Player()
+            >>> P1.strategy(P2)
+            'C'
+
+        This is affected by the history of the opponent:
+
+            >>> P1.history = ['C', 'C', 'C']
+            >>> P2.history = ['C', 'C', 'C']
+            >>> P1.strategy(P2)
+            'C'
+
+        If at any point the opponent defects then the player will forever defect:
+
+            >>> P1.history = ['C', 'C', 'D', 'D', 'D']
+            >>> P2.history = ['C', 'D', 'C', 'C', 'C']
+            >>> P1.strategy(P2)
+            'D'
+        >>>
+        """
+        if 'D' in opponent.history:
+            return 'D'
+        return 'C'
+
+    def __repr__(self):
+        """
+i       The string method for the strategy:
+
+            >>> P1 = Grudger()
+            >>> print P1
+            Grudger
+        """
+        return 'Grudger'
+
+class GoByMajority(Player):
+    """
+    A player examines the history of the opponent: if the opponent has more defections than cooperations then the player defects
+    """
+    def strategy(self, opponent):
+        """
+        Begins by playing 'C':
+
+            >>> P1 = GoByMajority()
+            >>> P2 = Player()
+            >>> P1.strategy(P2)
+            'C'
+
+        This is affected by the history of the opponent:
+
+            >>> P1.history = ['C', 'C', 'C']
+            >>> P2.history = ['C', 'C', 'C']
+            >>> P1.strategy(P2)
+            'C'
+
+        As long as the opponent cooperates at least as often as they defect then the player will defect.
+
+            >>> P1.history = ['C', 'D', 'D', 'D']
+            >>> P2.history = ['D', 'D', 'C', 'C']
+            >>> P1.strategy(P2)
+            'C'
+
+        If at any point the opponent has more defections than cooperations the player defects.
+
+            >>> P1.history = ['C', 'C', 'D', 'D', 'D']
+            >>> P2.history = ['C', 'D', 'D', 'D', 'C']
+            >>> P1.strategy(P2)
+            'D'
+        >>>
+        """
+        if sum([s == 'D' for s in opponent.history]) > sum([s == 'C' for s in opponent.history]):
+            return 'D'
+        return 'C'
+
+    def __repr__(self):
+        """
+i       The string method for the strategy:
+
+            >>> P1 = GoByMajority()
+            >>> print P1
+            Go By Majority
+        """
+        return 'Go By Majority'
