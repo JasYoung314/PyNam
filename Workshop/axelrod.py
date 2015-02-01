@@ -107,7 +107,24 @@ class Axelrod:
             Cooperator 2488
             Random 2580
 
-        We see that the Tit for Tat strategy is now much closer to the defector strategy.
+        We see that Tit for Tat is much closer. Let us add in another strategy.
+
+            >>> random.seed(1)
+            >>> P1 = Defector()
+            >>> P2 = Cooperator()
+            >>> P3 = TitForTat()
+            >>> P4 = Random()
+            >>> P5 = Grudger()
+            >>> P6 = GoByMajority()
+            >>> axelrod = Axelrod(P1, P2, P3, P4, P5, P6)
+            >>> axelrod.round_robin(turns=200)
+            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
+            ...     print player, player.score
+            Defector 1988
+            Grudger 2014
+            Tit For Tat 2184
+            Cooperator 2488
+            Random 2580
         """
         for p1, p2 in itertools.combinations(self.players, 2):
             turn = 0
