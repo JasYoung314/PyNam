@@ -46,9 +46,37 @@ class Axelrod:
             ...     print player, player.score
             Defector 0
             Cooperator 50
+
+        Automatically runs all results as required for games with more players:
+
+            >>> random.seed(1)
+            >>> P1 = Defector()
+            >>> P2 = Cooperator()
+            >>> P3 = Random()
+            >>> axelrod = Axelrod(P1, P2, P3)
+            >>> axelrod.round_robin(turns=10)
+            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
+            ...     print player, player.score
+            Defector 16
+            Random 56
+            Cooperator 85
+
+            >>> random.seed(110)
+            >>> P1 = Defector()
+            >>> P2 = Cooperator()
+            >>> P3 = Random()
+            >>> axelrod = Axelrod(P1, P2, P3)
+            >>> axelrod.round_robin(turns=10)
+            >>> for player in sorted(axelrod.players, key=lambda x: x.score):
+            ...     print player, player.score
+            Defector 12
+            Random 55
+            Cooperator 88
         """
         for p1, p2 in itertools.combinations(self.players, 2):
             turn = 0
+            p1.history = []
+            p2.history = []
             while turn < turns:
                 turn += 1
                 p1.play(p2)
@@ -255,4 +283,4 @@ i       The string method for the strategy:
             >>> print P1
             Cooperator
         """
-        return 'Cooperator'
+        return 'Random'
