@@ -133,6 +133,62 @@ class Axelrod:
             p1.score += scores[0]
             p2.score += scores[1]
 
+    def tournament(self, turns=200, repetitions=10):
+        """
+        Runs repetitions of the round robin (this is mainly to handle stochastic strategies).
+
+        Returns a dictionary containing the scores for every repetition.
+
+            >>> random.seed(1)
+            >>> P1 = Defector()
+            >>> P2 = Cooperator()
+            >>> P3 = TitForTat()
+            >>> P4 = Grudger()
+            >>> P5 = GoByMajority()
+            >>> P6 = Random()
+            >>> axelrod = Axelrod(P1, P2, P3, P4, P5, P6)
+            >>> results = axelrod.tournament(turns=200, repetitions=10)
+            >>> type(results)
+            <type 'dict'>
+            >>> for player in sorted(results.keys()):
+            ...     print player, results[player]
+            Grudger [2414, 4788, 7230, 9652, 12108, 14510, 16912, 19316, 21726, 24132]
+            Defector [2784, 5572, 8340, 11104, 13924, 16684, 19468, 22204, 24960, 27720]
+            Go By Majority [2457, 5114, 7583, 10262, 12688, 15135, 17713, 20365, 22898, 25558]
+            Cooperator [2888, 5797, 8724, 11618, 14461, 17400, 20327, 23212, 26103, 29003]
+            Tit For Tat [2584, 5143, 7681, 10223, 12746, 15297, 17849, 20400, 22946, 25505]
+            Random [3456, 6282, 9600, 12370, 15762, 19125, 22192, 24999, 28129, 30918]
+        """
+        dic = {player:[] for player in self.players}
+        for repetition in range(repetitions):
+            self.reset_player_history()
+            self.round_robin(turns=200)
+            for player in self.players:
+                dic[player].append(player.score)
+        return dic
+
+    def reset_player_history(self):
+        """
+        Resets all the player histories
+
+            >>> P1 = Defector()
+            >>> P1.history = ['C', 'D']
+            >>> P1.history
+            ['C', 'D']
+            >>> P2 = Cooperator()
+            >>> P2.history = ['D', 'D']
+            >>> P2.history
+            ['D', 'D']
+            >>> axelrod = Axelrod(P1, P2)
+            >>> axelrod.reset_player_history()
+            >>> P1.history
+            []
+            >>> P2.history
+            []
+        """
+        for player in self.players:
+            player.history = []
+
     def calculate_scores(self, p1, p2):
         """
         Calculates the score for two players based their history and on following:
