@@ -141,7 +141,7 @@ mpld3.save_html(fig,"effect_against_half_and_half.html", d3_url='./js/d3.js', mp
 # Evolutionary dynamics with both starting on the left
 size_of_population = 100
 number_of_rounds = 500
-mutation_factor = .05
+death_rate = .05
 reds = ['L' for k in range(size_of_population)]
 blues = ['L' for k in range(size_of_population)]
 red_data = [sum([k == 'L' for k in reds])]
@@ -149,8 +149,8 @@ blue_data = [sum([k == 'L' for k in reds])]
 for rnd in range(number_of_rounds):
     for indx, pair in enumerate(zip(reds, blues)):
         if pair[0] != pair[1]:
-            if random.random() < mutation_factor:
-                reds[indx], blues[indx] =  blues[indx], reds[indx]
+            if random.random() < death_rate:
+                reds[indx], blues[indx] = blues[indx], reds[indx]
     red_data.append(sum([k == 'L' for k in reds]))
     blue_data.append(sum([k == 'L' for k in blues]))
 
@@ -165,19 +165,21 @@ plt.xlim(0, number_of_rounds)
 mpld3.save_html(fig,"evolutionary_dynamics_both_L.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
 
 # Evolutionary dynamics with both starting on a given side
-size_of_population = 100
-number_of_rounds = 500
-mutation_factor = .05
-reds = ['L' for k in range(size_of_population)]
-blues = ['R' for k in range(size_of_population)]
+size_of_population = 100  # Number of people
+number_of_rounds = 500  # How many rounds
+death_rate = .05  # Chance of mind change
+
+reds = [random.choice('LR') for k in range(size_of_population)]
+blues = [random.choice('LR') for k in range(size_of_population)]
 red_data = [sum([k == 'L' for k in reds])]
 blue_data = [sum([k == 'L' for k in reds])]
-for rnd in range(number_of_rounds):
-    for indx, pair in enumerate(zip(reds, blues)):
-        if pair[0] != pair[1]:
-            if random.random() < mutation_factor:
-                reds[indx], blues[indx] =  blues[indx], reds[indx]
-    red_data.append(sum([k == 'L' for k in reds]))
+
+for rnd in range(number_of_rounds):  # Loop through rounds
+    for j, pair in enumerate(zip(reds, blues)):  # Loop through players
+        if pair[0] != pair[1]:  # If bump
+            if random.random() < death_rate:  # If mind change
+                reds[j], blues[j] = blues[j], reds[j]
+    red_data.append(sum([k == 'L' for k in reds]))  # Data collection
     blue_data.append(sum([k == 'L' for k in blues]))
 
 fig = plt.figure()
@@ -189,3 +191,39 @@ plt.title('Start with different conventions')
 plt.ylim(0,101)
 plt.xlim(0, number_of_rounds)
 mpld3.save_html(fig,"evolutionary_dynamics_L_and_R.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')
+
+
+# Evolutionary dynamics with a mutation rate:
+# Evolutionary dynamics
+size_of_population = 100  # Number of people
+number_of_rounds = 500  # How many rounds
+mutation_rate = .05  # Chance of changing strategy
+death_rate = .05  # Chance of mind change
+
+reds = ['L' for k in range(size_of_population)]
+blues = ['L' for k in range(size_of_population)]
+red_data = [sum([k == 'L' for k in reds])]
+blue_data = [sum([k == 'L' for k in reds])]
+
+for rnd in range(number_of_rounds):  # Loop through rounds
+    for j, pair in enumerate(zip(reds, blues)):  # Loop through players
+
+        if random.random() < mutation_rate:  # Check if random change
+            reds[j], blues[j] = random.choice('LR'), random.choice('LR')
+
+        if pair[0] != pair[1]:  # If bump
+            if random.random() < death_rate:  # If mind change
+                reds[j], blues[j] = blues[j], reds[j]
+
+    red_data.append(sum([k == 'L' for k in reds]))  # Data collection
+    blue_data.append(sum([k == 'L' for k in blues]))
+
+fig = plt.figure()
+plt.scatter(range(len(red_data)), red_data, color='red', marker='>')
+plt.scatter(range(len(blue_data)), blue_data, color='blue', marker='<')
+plt.xlabel('round')
+plt.ylabel('Number of the left')
+plt.title('Start with same conventions but random mutation')
+plt.ylim(0,101)
+plt.xlim(0, number_of_rounds)
+mpld3.save_html(fig, "evolutionary_dynamics_L_and_R_with_mutation.html", d3_url='./js/d3.js', mpld3_url='./js/mpld3.js')

@@ -57,6 +57,9 @@
                     <small><a href='https://twitter.com/drvinceknight'>@drvinceknight</a></small><br>
                     <small><a href='http://vincent-knight.com/'>www.vincent-knight.com</a></small>
 					</p>
+                    <p>
+                    <a href='https://github.com/drvinceknight/PyNam/Talk'>github.com/drvinceknight/PyNam/Talk</a>
+                    </p>
 				</section>
 
 				<section>
@@ -256,7 +259,7 @@ plot_experiment([walk(500, red_strategy, blue_strategy) for k in range(1000)])
 # Evolutionary dynamics
 size_of_population = 100  # Number of people
 number_of_rounds = 500  # How many rounds
-mutation_factor = .05  # Chance of mind change
+death_rate = .05  # Chance of removal
 
 reds = ['L' for k in range(size_of_population)]
 blues = ['L' for k in range(size_of_population)]
@@ -266,7 +269,7 @@ blue_data = [sum([k == 'L' for k in reds])]
 for rnd in range(number_of_rounds):  # Loop through rounds
     for j, pair in enumerate(zip(reds, blues)):  # Loop through players
         if pair[0] != pair[1]:  # If bump
-            if random.random() < mutation_factor:  # If mind change
+            if random.random() < death_rate:  # If mind change
                 reds[j], blues[j] =  blues[j], reds[j]
     red_data.append(sum([k == 'L' for k in reds]))  # Data collection
     blue_data.append(sum([k == 'L' for k in blues]))
@@ -282,10 +285,47 @@ for rnd in range(number_of_rounds):  # Loop through rounds
                 </section>
 
                 <section>
+					<pre><code data-trim contenteditable>
+# Evolutionary dynamics with a mutation rate:
+size_of_population = 100  # Number of people
+number_of_rounds = 500  # How many rounds
+mutation_rate = .05  # Chance of changing strategy
+death_rate = .05  # Chance of removal
+
+reds = ['L' for k in range(size_of_population)]
+blues = ['L' for k in range(size_of_population)]
+red_data = [sum([k == 'L' for k in reds])]
+blue_data = [sum([k == 'L' for k in reds])]
+
+for rnd in range(number_of_rounds):  # Loop through rounds
+    for j, pair in enumerate(zip(reds, blues)):  # Loop through players
+
+        if random.random() < mutation_rate:  # Check if random change
+            reds[j], blues[j] = random.choice('LR'), random.choice('LR')
+
+        if pair[0] != pair[1]:  # If bump
+            if random.random() < death_rate:  # If mind change
+                reds[j], blues[j] =  blues[j], reds[j]
+
+    red_data.append(sum([k == 'L' for k in reds]))  # Data collection
+    blue_data.append(sum([k == 'L' for k in blues]))
+					</code></pre>
+                </section>
+
+                <section>
+                    <iframe src='evolutionary_dynamics_L_and_R_with_mutation.html' width=660 height=502 align="middle"></iframe>
+                </section>
+
+
+                <section>
                     <ul>
                         <li>Simple Python (if and for loops);</li>
                         <li>Convention or conventional chaos.</li>
                     </ul>
+                </section>
+
+                <section>
+                <h1>Rock Paper Scissors</h1>
                 </section>
 
                 <section>
