@@ -60,7 +60,7 @@
 				</section>
 
 				<section>
-                    <h2>Advice for foreigners on how Britons walk</h2>
+                    <h2><a href='http://www.bbc.co.uk/news/magazine-28352045'>Advice for foreigners on how Britons walk</a></h2>
 					<blockquote cite="http://www.bbc.co.uk/news/magazine-28352045">
 						&ldquo;The British have little sense of pavement etiquette, preferring a slalom approach to pedestrian progress. When two strangers approach each other, it often results in the performance of a little gavotte as they double-guess in which direction the other will turn.&rdquo;
 					</blockquote>
@@ -210,10 +210,12 @@ def walk(number_of_walks=500, red_strategy=(1,1), blue_strategy=(1,1)):
     """
     Simulate people walking along the pavement
     """
-    reds = [random.choice('L' * red_strategy[0] + 'R' * red_strategy[1])
-                                      for k in range(number_of_walks)]
-    blues = [random.choice('L' * blue_strategy[0] + 'R' * blue_strategy[1])
-                                      for k in range(number_of_walks)]
+    reds = [random.choice('L' * red_strategy[0]
+                                + 'R' * red_strategy[1])
+                                  for k in range(number_of_walks)]
+    blues = [random.choice('L' * blue_strategy[0]
+                                + 'R' * blue_strategy[1])
+                                  for k in range(number_of_walks)]
     bumps = sum([reds[k] != blues[k] for k in range(number_of_walks)])
     return bumps
 
@@ -228,9 +230,8 @@ plot_experiment([walk(500, red_strategy, blue_strategy) for k in range(1000)])
                 <section>
 					<pre><code data-trim contenteditable>
 # What is effect of mix and matching?
-from bashplotlib.scatterplot import plot_scatter  # scatter plots
 
-plot_scatter([walk(500, (1,0), (x, 100-x)) for x in range(100)])
+[walk(500, (1,0), (x, 100-x)) for x in range(100)]
 					</code></pre>
                 </section>
 
@@ -241,9 +242,8 @@ plot_scatter([walk(500, (1,0), (x, 100-x)) for x in range(100)])
                 <section>
 					<pre><code data-trim contenteditable>
 # What is effect of mix and matching?
-from bashplotlib.scatterplot import plot_scatter  # scatter plots
 
-plot_scatter([walk(500, (.5,.5), (x, 100-x)) for x in range(100)])
+[walk(500, (1, 1), (x, 100-x)) for x in range(100)]
 					</code></pre>
                 </section>
 
