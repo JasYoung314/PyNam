@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>PyNam - VK - Iteration vs Recursion</title>
+		<title>PyNam - VK - Prisoner's Dilemma Tournament</title>
 
-		<meta name="description" content="A short talk showing some experimental things I played with a long time ago looking at recursion and iteration">
+		<meta name="description" content="A reproduction of Axelrod's tournemnt">
 		<meta name="author" content="Vince Knight">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,7 +51,8 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Recursion versus Iteration</h1>
+					<h1>Game Theory</h1>
+					<h3>Reproducing Axelrod's tournament</h3>
 					<p>
                     <small><a href='https://plus.google.com/+VincentKnight'>+VincentKnight</a></small><br>
                     <small><a href='https://twitter.com/drvinceknight'>@drvinceknight</a></small><br>
@@ -63,79 +64,19 @@
 				</section>
 
                 <section>
-					<pre><code data-trim contenteditable>
-def iterativebinarysearch(target):
-    """
-    Code that carries out a binary search
-    """
-    first = 0
-    last = len(data)
-    found = False
-    while first <= last and not found:
-        index = int((first + last) / 2)
-        if target == data[index]:
-            found = True
-        elif target < data[index]:
-            last = index - 1
-        else:
-            first = index + 1
-    return index
-					</code></pre>
+                <img src='./assets/img/game.svg' width=600>
                 </section>
 
-                <section>
-					<pre><code data-trim contenteditable>
-def recursivebinarysearch(target, first, last):
-    """
-    Code that carries out a recursive binary search
-    """
-    if first > last:
-        return False
-    index = int((first + last) / 2)
-    if target == data[index]:
-        return index
-    if target < data[index]:
-        return recursivebinarysearch(target, first, index - 1)
-    else:
-        return recursivebinarysearch(target, index + 1, last)
-    return index
-					</code></pre>
-                </section>
+				<section>
+                    <ul>
+                        <li>1980</li>
+                        <li class='fragment'>Computer tournament.</li>
+                        <li class='fragment'>Interesting conclusion.</li>
+                    </ul>
+				</section>
 
                 <section>
-                    <img src='./assets/img/binary_mean.png'>
-                </section>
-
-                <section>
-					<pre><code data-trim contenteditable>
-def iterativefactorial(n):
-    r = 1
-    i = 1
-    while i <= n:
-        r *= i
-        i += 1
-    return r
-					</code></pre>
-                </section>
-
-                <section>
-					<pre><code data-trim contenteditable>
-def recursivefactorial(n):
-    if n == 1:
-        return 1
-    return n * recursivefactorial(n - 1)
-					</code></pre>
-                </section>
-
-                <section>
-                    <img src='./assets/img/factorial.png'>
-                </section>
-
-                <section>
-                <ul>
-                    <li>What does this mean?</li>
-                    <li class='fragment'>I have no idea.</li>
-                <ul>
+                <img src='./assets/img/classes.svg' height=600>
                 </section>
 
                 <section>
