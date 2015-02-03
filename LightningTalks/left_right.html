@@ -1,0 +1,43 @@
+
+
+<style>
+
+</style>
+
+<div id="fig_el253344071106727125241245"></div>
+<script>
+function mpld3_load_lib(url, callback){
+  var s = document.createElement('script');
+  s.src = url;
+  s.async = true;
+  s.onreadystatechange = s.onload = callback;
+  s.onerror = function(){console.warn("failed to load library " + url);};
+  document.getElementsByTagName("head")[0].appendChild(s);
+}
+
+if(typeof(mpld3) !== "undefined" && mpld3._mpld3IsLoaded){
+   // already loaded: just create the figure
+   !function(mpld3){
+       
+       mpld3.draw_figure("fig_el253344071106727125241245", {"axes": [{"xlim": [0.0, 505.0], "yscale": "linear", "axesbg": "#FFFFFF", "texts": [{"v_baseline": "hanging", "h_anchor": "middle", "color": "#000000", "text": "Number of bumps", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 12.0, "position": [0.5, -0.059895833333333329], "rotation": -0.0, "id": "el25334407198288"}, {"v_baseline": "auto", "h_anchor": "middle", "color": "#000000", "text": "Frequency", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 12.0, "position": [-0.084047379032258063, 0.5], "rotation": -90.0, "id": "el25334407222736"}, {"v_baseline": "auto", "h_anchor": "middle", "color": "#000000", "text": "Simulating 2000 people walking towards each other 500 times but all walking on the same side", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 14.399999999999999, "position": [0.5, 1.0144675925925926], "rotation": -0.0, "id": "el25334407269392"}], "zoomable": true, "images": [], "xdomain": [0.0, 505.0], "ylim": [0.0, 1000.0], "paths": [{"edgecolor": "#000000", "facecolor": "#0000FF", "edgewidth": 1.0, "pathcodes": ["M", "L", "L", "L", "Z"], "yindex": 1, "coordinates": "data", "dasharray": "none", "zorder": 1, "alpha": 1, "xindex": 0, "data": "data01", "id": "el25334407335440"}], "sharey": [], "sharex": [], "axesbgalpha": null, "axes": [{"scale": "linear", "tickformat": null, "grid": {"gridOn": false}, "fontsize": 12.0, "position": "bottom", "nticks": 7, "tickvalues": null}, {"scale": "linear", "tickformat": null, "grid": {"gridOn": false}, "fontsize": 12.0, "position": "left", "nticks": 6, "tickvalues": null}], "lines": [], "markers": [], "id": "el25334407193296", "ydomain": [0.0, 1000.0], "collections": [], "xscale": "linear", "bbox": [0.125, 0.099999999999999978, 0.77500000000000002, 0.80000000000000004]}], "height": 480.0, "width": 640.0, "plugins": [{"type": "reset"}, {"enabled": false, "button": true, "type": "zoom"}, {"enabled": false, "button": true, "type": "boxzoom"}], "data": {"data01": [[499.5, 0.0], [500.5, 0.0], [500.5, 1000.0], [499.5, 1000.0]]}, "id": "el25334407110672"});
+   }(mpld3);
+}else if(typeof define === "function" && define.amd){
+   // require.js is available: use it to load d3/mpld3
+   require.config({paths: {d3: "./js/d3"}});
+   require(["d3"], function(d3){
+      window.d3 = d3;
+      mpld3_load_lib("./js/mpld3.js", function(){
+         
+         mpld3.draw_figure("fig_el253344071106727125241245", {"axes": [{"xlim": [0.0, 505.0], "yscale": "linear", "axesbg": "#FFFFFF", "texts": [{"v_baseline": "hanging", "h_anchor": "middle", "color": "#000000", "text": "Number of bumps", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 12.0, "position": [0.5, -0.059895833333333329], "rotation": -0.0, "id": "el25334407198288"}, {"v_baseline": "auto", "h_anchor": "middle", "color": "#000000", "text": "Frequency", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 12.0, "position": [-0.084047379032258063, 0.5], "rotation": -90.0, "id": "el25334407222736"}, {"v_baseline": "auto", "h_anchor": "middle", "color": "#000000", "text": "Simulating 2000 people walking towards each other 500 times but all walking on the same side", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 14.399999999999999, "position": [0.5, 1.0144675925925926], "rotation": -0.0, "id": "el25334407269392"}], "zoomable": true, "images": [], "xdomain": [0.0, 505.0], "ylim": [0.0, 1000.0], "paths": [{"edgecolor": "#000000", "facecolor": "#0000FF", "edgewidth": 1.0, "pathcodes": ["M", "L", "L", "L", "Z"], "yindex": 1, "coordinates": "data", "dasharray": "none", "zorder": 1, "alpha": 1, "xindex": 0, "data": "data01", "id": "el25334407335440"}], "sharey": [], "sharex": [], "axesbgalpha": null, "axes": [{"scale": "linear", "tickformat": null, "grid": {"gridOn": false}, "fontsize": 12.0, "position": "bottom", "nticks": 7, "tickvalues": null}, {"scale": "linear", "tickformat": null, "grid": {"gridOn": false}, "fontsize": 12.0, "position": "left", "nticks": 6, "tickvalues": null}], "lines": [], "markers": [], "id": "el25334407193296", "ydomain": [0.0, 1000.0], "collections": [], "xscale": "linear", "bbox": [0.125, 0.099999999999999978, 0.77500000000000002, 0.80000000000000004]}], "height": 480.0, "width": 640.0, "plugins": [{"type": "reset"}, {"enabled": false, "button": true, "type": "zoom"}, {"enabled": false, "button": true, "type": "boxzoom"}], "data": {"data01": [[499.5, 0.0], [500.5, 0.0], [500.5, 1000.0], [499.5, 1000.0]]}, "id": "el25334407110672"});
+      });
+    });
+}else{
+    // require.js not available: dynamically load d3 & mpld3
+    mpld3_load_lib("./js/d3.js", function(){
+         mpld3_load_lib("./js/mpld3.js", function(){
+                 
+                 mpld3.draw_figure("fig_el253344071106727125241245", {"axes": [{"xlim": [0.0, 505.0], "yscale": "linear", "axesbg": "#FFFFFF", "texts": [{"v_baseline": "hanging", "h_anchor": "middle", "color": "#000000", "text": "Number of bumps", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 12.0, "position": [0.5, -0.059895833333333329], "rotation": -0.0, "id": "el25334407198288"}, {"v_baseline": "auto", "h_anchor": "middle", "color": "#000000", "text": "Frequency", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 12.0, "position": [-0.084047379032258063, 0.5], "rotation": -90.0, "id": "el25334407222736"}, {"v_baseline": "auto", "h_anchor": "middle", "color": "#000000", "text": "Simulating 2000 people walking towards each other 500 times but all walking on the same side", "coordinates": "axes", "zorder": 3, "alpha": 1, "fontsize": 14.399999999999999, "position": [0.5, 1.0144675925925926], "rotation": -0.0, "id": "el25334407269392"}], "zoomable": true, "images": [], "xdomain": [0.0, 505.0], "ylim": [0.0, 1000.0], "paths": [{"edgecolor": "#000000", "facecolor": "#0000FF", "edgewidth": 1.0, "pathcodes": ["M", "L", "L", "L", "Z"], "yindex": 1, "coordinates": "data", "dasharray": "none", "zorder": 1, "alpha": 1, "xindex": 0, "data": "data01", "id": "el25334407335440"}], "sharey": [], "sharex": [], "axesbgalpha": null, "axes": [{"scale": "linear", "tickformat": null, "grid": {"gridOn": false}, "fontsize": 12.0, "position": "bottom", "nticks": 7, "tickvalues": null}, {"scale": "linear", "tickformat": null, "grid": {"gridOn": false}, "fontsize": 12.0, "position": "left", "nticks": 6, "tickvalues": null}], "lines": [], "markers": [], "id": "el25334407193296", "ydomain": [0.0, 1000.0], "collections": [], "xscale": "linear", "bbox": [0.125, 0.099999999999999978, 0.77500000000000002, 0.80000000000000004]}], "height": 480.0, "width": 640.0, "plugins": [{"type": "reset"}, {"enabled": false, "button": true, "type": "zoom"}, {"enabled": false, "button": true, "type": "boxzoom"}], "data": {"data01": [[499.5, 0.0], [500.5, 0.0], [500.5, 1000.0], [499.5, 1000.0]]}, "id": "el25334407110672"});
+            })
+         });
+}
+</script>
