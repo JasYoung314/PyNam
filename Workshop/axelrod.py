@@ -644,5 +644,5 @@ if __name__ == '__main__':
     results = axelrod.tournament(turns=1000, repetitions=50)
 
     plt.boxplot([results[player] for player in axelrod.players])
-    plt.xticks(range(1, 8), [str(p) for p in axelrod.players], rotation=90)
-    plt.show()
+    plt.xticks(range(1, len(axelrod.players) + 1), [str(p) for p in axelrod.players], rotation=90)
+    mpld3.show()
