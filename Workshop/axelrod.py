@@ -535,18 +535,114 @@ i       The string method for the strategy:
         """
         return 'Go By Majority'
 
+class Grumpy(Player):
+    """
+    A player that defects after a ceratin level of grumpiness. Grumpiness increases when the opponent defects and decreases when the opponent co-operates.
+    """
+    
+    def __init__(self, starting_state = 'Nice', grumpy_threshold = 50, nice_threshold = -50):
+        """
+        
+        Starts off nice::
+        
+            >>> P1 = Grumpy()
+            >>> P1.state
+            'Nice'
+        
+        Has a default threshold::
+
+            >>> P1 = Grumpy()
+            >>> P1.nice_threshold
+            -50
+            >>> P1.grumpy_threshold
+            50
+
+        But different thresholds can be set::
+
+            >>> P1 = Grumpy('Grumpy', 65, 3)
+            >>> P1.state
+            'Grumpy'
+            >>> P1.nice_threshold
+            3
+            >>> P1.grumpy_threshold
+            65
+
+        """
+
+        self.history = []
+        self.score = 0
+        self.state = starting_state
+        self.grumpy_threshold = grumpy_threshold
+        self.nice_threshold = nice_threshold
+
+    def strategy(self, opponent):
+        """
+
+        Starts off Nice::
+
+            >>> P1 = Grumpy('Nice', 3, 1)
+            >>> P2 = Player()
+            >>> P1.strategy(P2)
+            'C'
+
+
+        Becomes grumpy once threshold is hit::
+
+            >>> P2.history = ['D', 'D', 'D', 'D']
+            >>> P1.strategy(P2)
+            'D'
+
+        Wont become nice once that grumpy threshold is hit::
+
+            >>> P2.history = ['D', 'D', 'D', 'D', 'C', 'C']
+            >>> P1.strategy(P2)
+            'D'
+
+        Must reach a much lower threshold before it becomes nice again::
+
+            >>> P2.history = ['D', 'D', 'D', 'D', 'C', 'C', 'C', 'C']
+            >>> P1.strategy(P2)
+            'C'
+        """
+
+        self.grumpiness = sum(play=='D' for play in opponent.history) - sum(play=='C' for play in opponent.history) 
+
+        if self.state == 'Nice':
+            if self.grumpiness > self.grumpy_threshold:
+                self.state = 'Grumpy'
+                return 'D'
+            return 'C'
+
+        if self.state == 'Grumpy':
+            if self.grumpiness < self.nice_threshold:
+                self.state = 'Nice'
+                return 'C'
+            return 'D'
+
+    def __repr__(self):
+        """
+        The string method for the strategy:
+
+            >>> P1 = Grumpy()
+            >>> print P1
+            Grumpy
+        """
+
+        return 'Grumpy'
 
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt, mpld3
+    import matplotlib.pyplot as plt
     P1 = Defector()
     P2 = Cooperator()
     P3 = TitForTat()
     P4 = Grudger()
     P5 = GoByMajority()
-    P6 = Random()
-    axelrod = Axelrod(P1, P2, P3, P4, P5, P6)
+    P6 = Grumpy()
+    P7 = Random()
+
+    axelrod = Axelrod(P1, P2, P3, P4, P5, P6, P7)
     results = axelrod.tournament(turns=1000, repetitions=50)
 
     plt.boxplot([results[player] for player in axelrod.players])
-    plt.xticks(range(1, 7), [str(p) for p in axelrod.players], rotation=90)
-    mpld3.show()
+    plt.xticks(range(1, 8), [str(p) for p in axelrod.players], rotation=90)
+    plt.show()
