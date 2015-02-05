@@ -1,5 +1,5 @@
 """
-Recreate Axelrod's tournament
+Recreate Axelrods tournament
 
 
 """
